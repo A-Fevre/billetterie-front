@@ -11,8 +11,9 @@ export interface AuthResponse {
 
 export interface Event {
   id: number
-  title: string
+  name: string
   description: string | null
+  location: string
   date: string
   capacity: number
   capacity_remaining: number

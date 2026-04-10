@@ -85,7 +85,7 @@ export default function TicketPage({ params }: { params: Promise<{ id: string }>
               <div>
                 <CardTitle>Billet #{ticket.id}</CardTitle>
                 <CardDescription>
-                  {ticket.event ? ticket.event.title : `Événement #${ticket.event_id}`}
+                  {ticket.event ? ticket.event.name : `Événement #${ticket.event_id}`}
                 </CardDescription>
               </div>
               <Badge variant={STATUS_VARIANTS[ticket.status]}>{STATUS_LABELS[ticket.status]}</Badge>

@@ -10,9 +10,6 @@ RUN pnpm install --frozen-lockfile
 # Stage 2: builder
 FROM node:22-alpine AS builder
 WORKDIR /app
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-COPY --from=deps $PNPM_HOME $PNPM_HOME
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN ./node_modules/.bin/next build

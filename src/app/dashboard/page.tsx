@@ -44,6 +44,9 @@ export default function DashboardPage() {
         <h1 className="text-xl font-semibold">Billetterie</h1>
         <div className="flex items-center gap-4">
           <span className="text-muted-foreground text-sm">{user?.name}</span>
+          <Button asChild variant="outline" size="sm">
+            <Link href="/tickets">Mes billets</Link>
+          </Button>
           <Button variant="outline" size="sm" onClick={handleLogout}>
             Se déconnecter
           </Button>

@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -14,18 +15,17 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/context/AuthContext'
 import { useEvents } from '@/hooks/useEvents'
 import { formatPrice, formatDate } from '@/lib/utils'
 
 export default function DashboardPage() {
   const router = useRouter()
-  const { isAuthenticated, logout, getUser } = useAuth()
+  const { isAuthenticated, logout, user } = useAuth()
   const { data, loading } = useEvents()
-  const user = getUser()
 
   useEffect(() => {
-    if (!isAuthenticated()) {
+    if (!isAuthenticated) {
       router.push('/auth/login')
     }
   }, [isAuthenticated, router])

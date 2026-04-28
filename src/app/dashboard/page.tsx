@@ -54,7 +54,12 @@ export default function DashboardPage() {
       </header>
 
       <main className="max-w-5xl mx-auto p-6">
-        <h2 className="text-2xl font-bold mb-6">Événements disponibles</h2>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold">Événements disponibles</h2>
+          <Button asChild size="sm">
+            <Link href="/events/create">+ Créer un événement</Link>
+          </Button>
+        </div>
 
         {loading && <p className="text-muted-foreground">Chargement des événements...</p>}
 
@@ -62,7 +67,7 @@ export default function DashboardPage() {
           {data?.data.map((event) => (
             <Card key={event.id} className="flex flex-col">
               <CardHeader>
-                <CardTitle className="line-clamp-2">{event.title}</CardTitle>
+                <CardTitle className="line-clamp-2">{event.name}</CardTitle>
                 <CardDescription>{formatDate(event.date)}</CardDescription>
               </CardHeader>
               <CardContent className="flex-1">

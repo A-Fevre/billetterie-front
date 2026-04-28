@@ -95,7 +95,7 @@ export default function EventPage({ params }: { params: Promise<{ id: string }> 
 
       <main className="max-w-2xl mx-auto p-6 flex flex-col gap-6">
         <div>
-          <h1 className="text-3xl font-bold">{event.title}</h1>
+          <h1 className="text-3xl font-bold">{event.name}</h1>
           <p className="text-muted-foreground mt-1">{formatDate(event.date)}</p>
         </div>
 

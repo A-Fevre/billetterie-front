@@ -68,7 +68,7 @@ export default function MyTicketsPage() {
               <CardHeader>
                 <div className="flex items-start justify-between gap-2">
                   <CardTitle className="text-base line-clamp-2">
-                    {ticket.event ? ticket.event.title : `Événement #${ticket.event_id}`}
+                    {ticket.event ? ticket.event.name : `Événement #${ticket.event_id}`}
                   </CardTitle>
                   <Badge variant={STATUS_VARIANTS[ticket.status]} className="shrink-0">
                     {STATUS_LABELS[ticket.status]}

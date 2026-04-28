@@ -17,6 +17,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
+import { useAuth } from '@/context/AuthContext'
 import { useEvent } from '@/hooks/useEvents'
 import { api } from '@/lib/api'
 import { formatDate, formatPrice } from '@/lib/utils'
@@ -31,10 +32,12 @@ const TICKET_TYPES = [
 export default function EventPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
   const router = useRouter()
+  const { user } = useAuth()
   const { event, loading, error } = useEvent(Number(id))
   const [ticketType, setTicketType] = useState<'standard' | 'early_bird' | 'vip'>('standard')
   const [quantity, setQuantity] = useState(1)
   const [purchasing, setPurchasing] = useState(false)
+  const [deleting, setDeleting] = useState(false)
 
   async function handlePurchase(e: React.FormEvent) {
     e.preventDefault()
@@ -55,18 +58,39 @@ export default function EventPage({ params }: { params: Promise<{ id: string }> 
     }
   }
 
+  async function handleDelete() {
+    if (!confirm('Supprimer cet événement définitivement ?')) return
+    setDeleting(true)
+    try {
+      await api.delete(`/events/${id}`)
+      toast.success('Événement supprimé.')
+      router.push('/dashboard')
+    } catch (err) {
+      const apiError = err as ApiError
+      toast.error(apiError.message ?? 'Erreur lors de la suppression.')
+    } finally {
+      setDeleting(false)
+    }
+  }
+
   if (loading) return <p className="p-8 text-muted-foreground">Chargement...</p>
   if (error || !event) return <p className="p-8 text-destructive">{error}</p>
 
   const selectedType = TICKET_TYPES.find((t) => t.value === ticketType)!
   const estimatedPrice = Math.round(event.price_cents * selectedType.multiplier) * quantity
+  const isOwner = user?.id === event.user_id
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b px-6 py-4">
+      <header className="border-b px-6 py-4 flex items-center justify-between">
         <Button asChild variant="ghost" size="sm">
           <Link href="/dashboard">← Retour</Link>
         </Button>
+        {isOwner && (
+          <Button variant="destructive" size="sm" onClick={handleDelete} disabled={deleting}>
+            {deleting ? 'Suppression...' : 'Supprimer'}
+          </Button>
+        )}
       </header>
 
       <main className="max-w-2xl mx-auto p-6 flex flex-col gap-6">
